@@ -1,0 +1,21 @@
+@startuml
+title Diagrama de Interacción (Usuario)
+autonumber
+actor Usuario
+activate LectorFacial
+Usuario -> LectorFacial: Entrada usuario
+alt Si no existe se crea en la BD:
+    LectorFacial -> LectorFacial: Toma de fotografía
+    LectorFacial -> Usuario: Cerrar registro
+end
+LectorFacial -> DetectorMetales: Identificación de elementos
+DetectorMetales -> DetectorMetales: Validar lista de elementos prohibidos
+alt Si hay coincidencia:
+    DetectorMetales -> Alarma: Elemento detectado, emite alarma
+    Alarma -> Registro: Generar Registro
+else Si no hay coincidencias:
+    DetectorMetales -> Registro: Se permite entrada y genera registro
+end
+Registro -> Usuario: Finaliza proceso
+deactivate LectorFacial
+@enduml
